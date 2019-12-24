@@ -95,6 +95,7 @@ $ sudo chmod +x /usr/local/bin/pivnet
 $ sudo apt-get -y install jq
 $ sudo apt-get -y install unzip
 $ sudo apt-get -y install tmux
+$ sudo snap install terraform
 ```
 
 #### 0.4.1. PAS Download
@@ -115,6 +116,27 @@ $ pivnet download-product-files -p elastic-runtime -r 2.8.0 -i 560206
 ```
 
 #### 0.4.2. Terraform Azure for PAS
+terraform.tfvars
+```
+subscription_id       = "YOUR-SUBSCRIPTION-ID"
+tenant_id             = "YOUR-TENANT-ID"
+client_id             = "YOUR-SERVICE-PRINCIPAL-ID"
+client_secret         = "YOUR-SERVICE-PRINCIPAL-PASSWORD"
+
+env_name              = "pcf"
+env_short_name        = "az"
+location              = "japaneast"
+ops_manager_image_uri = "https://opsmanagersoutheastasia.blob.core.windows.net/images/ops-manager-2.8.0-build.187.vhd"
+dns_suffix            = "syanagihara.cf"
+vm_admin_username     = "admin"
+```
+
+|Input|Command|
+|-----|-------|
+|SUBSCRIPTION-ID|az account list \| jq -r '.[0].id'|
+|TENANT-ID|az account list \| jq -r '.[0].tenantId'|
+|SERVICE-PRINCIPAL-NAME|az ad sp list --display-name boshsyanagihara \| jq -r '.[0].appId'|
+|SERVICE-PRINCIPAL-PASSWORD|Swordfish|
 
 ## Licence
 
