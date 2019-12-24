@@ -18,6 +18,12 @@ Pivotal Platform Installation on Azure
 ## Usage
 
 ## Installation
+### 0. Prerequiste
+### 0.1. Azure CLI
+```
+$ brew update
+$ brew install azure-cli
+```
 
 ## Licence
 
