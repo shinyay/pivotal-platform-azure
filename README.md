@@ -100,8 +100,21 @@ $ sudo apt-get -y install tmux
 #### 0.4.1. PAS Download
 ```
 $ pivnet login --api-token='2296.........'
-
+$ pivnet releases -p elastic-runtime
+$ pivnet product-files -p elastic-runtime -r 2.8.0
 ```
+
+Azure Terraform Templates
+```
+$ pivnet download-product-files -p elastic-runtime -r 2.8.0 -i 494978
+```
+
+Pivotal Application Service
+```
+$ pivnet download-product-files -p elastic-runtime -r 2.8.0 -i 560206
+```
+
+#### 0.4.2. Terraform Azure for PAS
 
 ## Licence
 
