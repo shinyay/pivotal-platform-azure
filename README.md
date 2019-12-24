@@ -138,6 +138,24 @@ vm_admin_username     = "admin"
 |SERVICE-PRINCIPAL-NAME|az ad sp list --display-name boshsyanagihara \| jq -r '.[0].appId'|
 |SERVICE-PRINCIPAL-PASSWORD|Swordfish|
 
+##### AzureRM Provider ISSUE
+- [azurerm provider 1.34 failds to deploy vm with image copy from blob](https://github.com/terraform-providers/terraform-provider-azurerm/issues/4361)
+
+- Modify **main.tf**
+
+```
+provider "azurerm" {
+  version = "= 1.32"
+}
+```
+
+#### 0.4.3. Terraform apply
+```
+$ terraform init
+$ terraform plan -out=plan
+$ terraform apply plan
+```
+
 ## Licence
 
 Released under the [MIT license](https://gist.githubusercontent.com/shinyay/56e54ee4c0e22db8211e05e70a63247e/raw/34c6fdd50d54aa8e23560c296424aeb61599aa71/LICENSE)
