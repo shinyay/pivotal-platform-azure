@@ -76,6 +76,27 @@ $ ssh azureuser@<PUBLIC_IP>
 $ curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 ```
 
+#### 0.3.2. CLI for Pivotal
+```
+$ cd /tmp
+$ sudo apt update
+$ export BOSH_CLI_VERSION=6.1.1
+$ export OM_VERSION=4.4.0
+$ export PIVNET_CLI=0.0.76
+$ wget https://github.com/cloudfoundry/bosh-cli/releases/download/v${BOSH_CLI_VERSION}/bosh-cli-${BOSH_CLI_VERSION}-linux-amd64
+$ wget https://github.com/pivotal-cf/om/releases/download/${OM_VERSION}/om-linux-${OM_VERSION}
+$ wget https://github.com/pivotal-cf/pivnet-cli/releases/download/v${PIVNET_CLI}/pivnet-linux-amd64-${PIVNET_CLI}
+$ sudo mv bosh-cli-* /usr/local/bin/bosh
+$ sudo mv om-linux-* /usr/local/bin/om
+$ sudo mv pivnet-linux-* /usr/local/bin/pivnet
+$ sudo chmod +x /usr/local/bin/bosh
+$ sudo chmod +x /usr/local/bin/om
+$ sudo chmod +x /usr/local/bin/pivnet
+$ sudo apt-get -y install jq
+$ sudo apt-get -y install unzip
+$ sudo apt-get -y install tmux
+```
+
 ## Licence
 
 Released under the [MIT license](https://gist.githubusercontent.com/shinyay/56e54ee4c0e22db8211e05e70a63247e/raw/34c6fdd50d54aa8e23560c296424aeb61599aa71/LICENSE)
