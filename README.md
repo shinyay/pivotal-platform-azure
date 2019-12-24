@@ -29,7 +29,7 @@ $ brew install azure-cli
 $ az login
 ```
 
-#### Azure ID
+#### 0.1.1. Azure ID
 
 |ID Name|Command|
 |-----|-------|
@@ -68,6 +68,12 @@ $ az vm list-ip-addresses|jq -r .[0].virtualMachine.network.publicIpAddresses[0]
 
 ```
 $ ssh azureuser@<PUBLIC_IP>
+```
+
+### 0.3. Jumpbox VM
+#### 0.3.1. Azure CLI for Ubuntu
+```
+$ curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 ```
 
 ## Licence
