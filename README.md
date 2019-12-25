@@ -173,6 +173,7 @@ $ terraform output -json | jq -r .env_dns_zone_name_servers.value
 
 Configure the Name Servers into DNS Provider, like Route 53, from Terraform output
 
+### 1. Installation and Configuration
 ### 1.0. BOSH Director on Azure
 #### 1.0.1. OpsManager Access
 
@@ -326,6 +327,174 @@ $ om --target https://$OPS_MGR_DNS -k -u $OPS_MGR_USR -p $OPS_MGR_PWD --request-
 ```
 $ om --target https://$OPS_MGR_DNS -k -u $OPS_MGR_USR -p $OPS_MGR_PWD stage-product -p cf -v 2.8.0
 ```
+
+#### 1.1.4. Assign AZs and Networks
+
+|Input|Value|
+|-----|-----|
+|Place singleton jobs in|any|
+|Balance other jobs in||
+|Network|pas|
+
+#### 1.1.5. Domains
+
+|Input|Value|
+|-----|-----|
+|System Domain|terraform output -json\|jq -r .sys_domain.value|
+|Apps Domain|terraform output -json\|jq -r .apps_domain.value|
+
+#### 1.1.6. Networking
+
+|Input|Value|
+|-----|-----|
+|Router IPs|---|
+|SSH Proxy IPs|---|
+|HAProxy IPs|---|
+|TCP Router IPs|---|
+|Certificates and Private Keys for HAProxy and Router Add|Add|
+|Name|pas-cert|
+|Generate RSA Certificate|MY_DOMAIN = cat terraform.tfstate \| jq -r .modules[2].outputs.dns_zone_name.value<br>\*.$MY_DOMAIN,\*.sys.$MY_DOMAIN,\*.apps.$MY_DOMAIN,login.sys.$MY_DOMAIN,uaa.sys.$MY_DOMAIN,doppler.sys.$MY_DOMAIN,loggregator.sys.$MY_DOMAIN,ssh.sys.$MY_DOMAIN,tcp.$MY_DOMAIN,opsman.$MY_DOMAIN<br>[SAMPLE]<br>\*.mypcf.syanagihara.cf,\*.sys.mypcf.syanagihara.cf,\*.apps.mypcf.syanagihara.cf,login.sys.mypcf.syanagihara.cf,uaa.sys.mypcf.syanagihara.cf,doppler.sys.mypcf.syanagihara.cf,loggregator.sys.mypcf.syanagihara.cf,ssh.sys.mypcf.syanagihara.cf,tcp.mypcf.syanagihara.cf,opsman.mypcf.syanagihara.cf|
+|Certificate Authorities Trusted by Router and HAProxy|---|
+|Minimum version of TLS supported by HAProxy and Router|DEFAUT<br>TLSv1.2|
+|Balancing algorithm used by Router|Round robin|
+|Logging of Client IPs in CF Router|DEFAULT<br>Log client IPs|
+|TLS termination point|Infrastructure load balancer|
+|HAProxy behavior for Client Certificate Validation|DEFAUT<br>HAProxy does not request client certificates.|
+|Router behavior for Client Certificate Validation|DEFAUT<br>Router requests but does not require client certificates.|
+|TLS cipher suites for Router|ECDHE-RSA-AES128-GCM-SHA256:TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384|
+|TLS cipher suites for HAProxy|DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384|
+|HAProxy forwards requests to Router over TLS|Disable|
+|HAProxy support for HSTS|Disable|
+|Disable SSL certificate verification for this environment|TRUE|
+|Disable HTTP on HAProxy and Router|FALSE|
+|Disable insecure cookies on the Router|FALSE|
+|Enable Zipkin tracing headers on the Router|TRUE|
+|Enable Router to write access logs locally|TRUE|
+|Routers reject requests for Isolation Segments|FALSE|
+|Enable support for PROXY protocol in CF Router|FALSE|
+|Choose whether to enable route services.|Enable route services|
+|Maximum connections per back end|500|
+|Enable Keepalive Connections for Router|Enable|
+|Router Timeout to Backends|900|
+|Frontend Idle Timeout for Router and HAProxy|900|
+|Load Balancer Unhealthy Threshold|20|
+|Load Balancer Healthy Threshold|20|
+|HTTP Headers to Log|---|
+|HAProxy Request Max Buffer Size|16384|
+|HAProxy Protected Domains|---|
+|HAProxy Trusted CIDRs|---|
+|Loggregator Port|---|
+|Container Network Interface Plugin|Silk|
+|DNS Search Domains|---|
+|Database Connection Timeout|120|
+|Enable TCP requests to your apps via specific ports on the TCP Router|Select this option if you prefer to enable TCP Routing at a later time|
+
+#### 1.1.7. Application Containers
+
+- Default
+
+#### 1.1.8. Application Developer Controls
+
+- Default
+
+#### 1.1.9. Application Security Group
+
+- Type **"X"** to acknowledge that you understand this message 
+
+#### 1.1.10. Authentication and Enterprise SSO
+
+- Default
+
+#### 1.1.11. UAA
+
+|Input|Value|
+|-----|-----|
+|Choose the location of your UAA database|PAS database
+|JWT Issuer URI|---|
+|SAML Service Provider Credentials|Generate RSA Certificate|
+|Generate RSA Certificate|MY_DOMAIN = cat terraform.tfstate \| jq -r .modules[2].outputs.dns_zone_name.value<br>\*.$MY_DOMAIN,\*.sys.$MY_DOMAIN,\*.apps.$MY_DOMAIN,login.sys.$MY_DOMAIN,uaa.sys.$MY_DOMAIN,doppler.sys.$MY_DOMAIN,loggregator.sys.$MY_DOMAIN,ssh.sys.$MY_DOMAIN,tcp.$MY_DOMAIN,opsman.$MY_DOMAIN<br>[SAMPLE]<br>\*.mypcf.syanagihara.cf,\*.sys.mypcf.syanagihara.cf,\*.apps.mypcf.syanagihara.cf,login.sys.mypcf.syanagihara.cf,uaa.sys.mypcf.syanagihara.cf,doppler.sys.mypcf.syanagihara.cf,loggregator.sys.mypcf.syanagihara.cf,ssh.sys.mypcf.syanagihara.cf,tcp.mypcf.syanagihara.cf,opsman.mypcf.syanagihara.cf|
+|SAML Service Provider Key Password|---|
+|SAML Entity ID Override|---|
+|Signature Algorithm|SHA256|
+|Apps Manager Access Token Lifetime|3600|
+|Cloud Foundry CLI Access Token Lifetime|7200|
+|Cloud Foundry CLI Refresh Token Lifetime|1209600|
+|Global Login Session Max Timeout|28800|
+|Global Login Session Idle Timeout|1800|
+|Customize Username Label|Email|
+|Customize Password Label|Password|
+|Proxy IPs Regular Expression|DEFAULT|
+
+#### 1.1.12. CredHub
+
+|Input|Value|
+|-----|-----|
+|Choose the location of your CredHub database|PAS database|
+|KMS plugin providers|---|
+|Internal encryption provider keys|Add|
+|Encryption Keys|Add|
+|Name|pas-encrypt|
+|Key|<20字以上>|
+|Primary|TRUE|
+
+#### 1.1.13. Database
+
+- Internal Databases - MySQL - Percona XtraDB Cluster
+
+#### 1.1.14. Internal MySQL
+
+- E-mail address (required) 
+
+#### 1.1.15. File Storage
+
+- Default
+
+#### 1.1.14. System Logging
+
+- Default
+
+#### 1.1.14. Custom Branding
+
+- Default
+
+#### 1.1.14. Apps Manager
+
+- Default
+
+#### 1.1.14. Email Notifications
+
+- Default
+
+#### 1.1.14. App Autoscaler
+
+- Default
+
+#### 1.1.14. Cloud Controller
+
+- Default
+
+#### 1.1.14. Smoke Tests
+
+- Default
+
+#### 1.1.14. Advanced Features
+
+- Default
+
+#### 1.1.14. Metric Registrar
+
+- Default
+
+#### 1.1.14. Errands
+
+- Default
+
+#### 1.1.14. Resource Config
+
+|Input|Value|
+|-----|-----|
+|Router - LoadBalancers|terraform output -json\| jq -r .web_lb_name.value|
+|Diego Brain|terraform output -json\| jq -r .diego_ssh_lb_name.value|
 
 ## Licence
 
