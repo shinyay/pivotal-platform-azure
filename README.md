@@ -301,7 +301,25 @@ $ terraform output -json | jq -r .ops_manager_dns.value
 |BOSH Director|Standard_DS2_v2|
 |Master Compilation Job|Standard_F4s|
 
-### 1.1. 
+### 1.1. PAS on Azure
+#### 1.1.1. OM Authentication
+
+```
+export OPS_MGR_DNS=`terraform output -json| jq -r .ops_manager_dns.value`
+
+export OPS_MGR_USR=
+export OPS_MGR_PWD=
+```
+
+```
+$ om --target https://$OPS_MGR_DNS --skip-ssl-validation configure-authentication --username $OPS_MGR_USR --password $OPS_MGR_PWD --decryption-passphrase $OPS_MGR_PWD
+```
+
+#### 1.1.2. PAS Upload
+
+```
+$ om --target https://$OPS_MGR_DNS -k -u $OPS_MGR_USR -p $OPS_MGR_PWD --request-timeout 3600 upload-product -p cf-2.8.*.pivotal
+```
 
 ## Licence
 
