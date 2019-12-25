@@ -496,6 +496,11 @@ $ om --target https://$OPS_MGR_DNS -k -u $OPS_MGR_USR -p $OPS_MGR_PWD stage-prod
 |Router - LoadBalancers|terraform output -json\| jq -r .web_lb_name.value|
 |Diego Brain|terraform output -json\| jq -r .diego_ssh_lb_name.value|
 
+#### 1.1.15. Apps Manager
+
+- http://login.<SYS_DOMAIN>
+  - `terraform output -json|jq -r .sys_domain.value`
+
 ## Licence
 
 Released under the [MIT license](https://gist.githubusercontent.com/shinyay/56e54ee4c0e22db8211e05e70a63247e/raw/34c6fdd50d54aa8e23560c296424aeb61599aa71/LICENSE)
