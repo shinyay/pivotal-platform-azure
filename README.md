@@ -15,6 +15,8 @@ Pivotal Platform Installation on Azure
 
 ## Requirement
 
+This is based on PAS v2.8.0
+
 ## Usage
 
 ## Installation
